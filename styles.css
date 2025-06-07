@@ -1,0 +1,368 @@
+/* Custom CSS Variables */
+:root {
+    --hsg-green: #005D45;
+    --hsg-gold: #FFD700; /* Use with care due to contrast on white */
+    --hsg-blue: #007AFF; /* Standard blue for focus/links if needed */
+    --hsg-light-gray: #F8F8F8;
+    --hsg-medium-gray: #EEEEEE;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Font Setup */
+body {
+    font-family: 'Noto Sans TC', 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Tailwind Classes (Semantic aliases) */
+.bg-hsg-green { background-color: var(--hsg-green); }
+.text-hsg-green { color: var(--hsg-green); }
+.bg-hsg-gold { background-color: var(--hsg-gold); }
+.text-hsg-gold { color: var(--hsg-gold); }
+.bg-hsg-blue { background-color: var(--hsg-blue); }
+.text-hsg-blue { color: var(--hsg-blue); }
+.border-hsg-green { border-color: var(--hsg-green); }
+.border-hsg-gold { border-color: var(--hsg-gold); }
+
+/* Timeline Navigation Styles */
+.timeline-nav { /* This is the scrollable container */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.timeline-nav::-webkit-scrollbar { /* Chrome, Safari, Opera */
+    display: none;
+}
+
+/* Styling the inner container that holds the timeline items and the line */
+.timeline-nav > div.flex { /* Targeting the immediate flex child that contains items */
+    position: relative; /* Needed for absolute positioning of timeline-line */
+}
+
+.timeline-item {
+    position: relative; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    min-width: 80px;
+    height: 70px; /* Fixed height to help center the dot */
+    cursor: pointer;
+    transition: var(--transition-all);
+    outline: none; /* Will be handled by :focus style */
+}
+
+.timeline-item:hover .timeline-year,
+.timeline-item:focus .timeline-year {
+    color: var(--hsg-blue);
+    transform: scale(1.05) translateX(-50%); /* Keep translateX for centering */
+}
+.timeline-item:focus .timeline-dot { /* Add focus style for dot too */
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3); 
+}
+
+
+.timeline-item.active .timeline-year {
+    color: var(--hsg-green);
+    font-weight: 700;
+}
+
+.timeline-item.active .timeline-dot {
+    background-color: var(--hsg-green);
+    transform: scale(1.2);
+}
+
+.timeline-year {
+    font-size: 0.875rem; /* 14px */
+    font-weight: 600;
+    transition: var(--transition-all);
+    position: absolute;
+    top: 8px; 
+    left: 50%;
+    transform: translateX(-50%); /* Center the text */
+    width: 100%; /* Prevent overflow if text is long */
+    text-align: center;
+    pointer-events: none; /* Allow clicks to pass to timeline-item */
+    color: #4B5563; /* Default color: gray-600 */
+}
+
+.timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #D1D5DB; /* gray-300 */
+    transition: var(--transition-all);
+    /* Dot is centered by timeline-item's flex properties */
+}
+
+.timeline-line {
+    position: absolute;
+    top: 50%; /* Vertically center line in parent */
+    left: 0;  /* Start from the far left of parent */
+    right: 0; /* Extend to the far right of parent */
+    height: 2px;
+    background-color: #E5E7EB; /* gray-200 */
+    transform: translateY(-50%); /* Fine-tune vertical centering */
+    z-index: -1; /* Behind timeline items */
+}
+
+/* Year Card Styles */
+.year-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%); /* white to gray-50 */
+    border-radius: 16px;
+    box-shadow: var(--shadow-md); /* Slightly increased default shadow */
+    border: 1px solid #E5E7EB; /* gray-200 */
+    transition: var(--transition-all);
+    position: relative;
+    overflow: hidden;
+}
+
+.year-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px; /* Slightly thicker accent line */
+    background: linear-gradient(90deg, var(--hsg-green) 0%, var(--hsg-gold) 100%);
+    opacity: 0.85;
+}
+
+.year-card:hover {
+    transform: translateY(-5px) scale(1.01); /* Enhanced hover effect */
+    box-shadow: var(--shadow-lg);
+    border-color: var(--hsg-green);
+}
+.year-card:hover::before {
+    opacity: 1;
+}
+
+.year-title {
+    font-size: 2.5rem; /* 40px */
+    font-weight: 700;
+    color: var(--hsg-green);
+    text-align: center;
+    margin-bottom: 1.75rem; /* 28px */
+    position: relative;
+}
+
+.year-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; /* Adjusted spacing */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px; /* Slightly wider */
+    height: 3px; /* Slightly thicker */
+    background: linear-gradient(90deg, var(--hsg-green) 20%, var(--hsg-gold) 80%);
+    border-radius: 1.5px;
+}
+
+.milestone-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.milestone-item {
+    display: flex;
+    align-items: flex-start; /* Align bullet with first line of text */
+    padding: 1rem 0; /* 16px */
+    border-bottom: 1px solid #F3F4F6; /* gray-100 */
+    transition: var(--transition-all);
+}
+
+.milestone-item:last-child {
+    border-bottom: none;
+}
+
+.milestone-item:hover {
+    background-color: rgba(243, 244, 246, 0.5); /* Lighter gray-100 with opacity */
+    /* Adjust padding for hover state based on card's padding (p-6 or p-8) */
+    margin-left: -1.5rem; /* Corresponds to p-6 */
+    margin-right: -1.5rem; /* Corresponds to p-6 */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 8px;
+}
+@media (min-width: 640px) { /* sm breakpoint */
+    .year-card.sm\\:p-8 .milestone-item:hover { /* If card has sm:p-8 */
+        margin-left: -2rem;
+        margin-right: -2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+
+.milestone-bullet {
+    width: 10px; /* Slightly smaller bullet */
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--hsg-gold);
+    margin-right: 1rem; /* 16px */
+    margin-top: 0.4em; /* Align with text better */
+    flex-shrink: 0;
+    transition: var(--transition-all);
+    box-shadow: 0 0 5px rgba(255,215,0,0.5); /* Subtle glow for gold bullet */
+}
+
+.milestone-item:hover .milestone-bullet {
+    background-color: var(--hsg-green);
+    transform: scale(1.25);
+    box-shadow: 0 0 8px rgba(0,93,69,0.5); /* Green glow on hover */
+}
+
+.milestone-text {
+    font-size: 1rem; /* 16px */
+    line-height: 1.7; /* Increased for readability */
+    color: #374151; /* gray-700 */
+    flex: 1;
+}
+
+.milestone-item:hover .milestone-text {
+    color: #111827; /* gray-900 */
+}
+
+/* Loading Animation (spinner is from Tailwind animation) */
+
+/* Fade In Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards; /* Ensure it stays at 'to' state */
+}
+
+/* Loading Indicator styles */
+#loading-indicator > div:first-child { /* Target the inner fixed div */
+    transition: opacity 0.3s ease-out;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) { /* md */
+    .year-title {
+        font-size: 2rem; /* 32px */
+        margin-bottom: 1.5rem; /* 24px */
+    }
+     .year-title::after {
+        width: 60px;
+        height: 2.5px;
+        bottom: -8px;
+    }
+    
+    .milestone-item {
+        padding: 0.75rem 0; /* 12px */
+    }
+        
+    .milestone-text {
+        font-size: 0.925rem; /* ~15px */
+    }
+    
+    .timeline-item {
+        min-width: 60px;
+        height: 60px; 
+    }
+    
+    .timeline-year {
+        font-size: 0.75rem; /* 12px */
+        top: 6px; 
+    }
+}
+
+@media (max-width: 480px) { /* xs, custom smaller breakpoint */
+    .year-card {
+        padding: 1.25rem; /* p-5 */
+    }
+    .year-card .milestone-item:hover { /* Adjust hover margin for p-5 */
+        margin-left: -1.25rem;
+        margin-right: -1.25rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    .year-title {
+        font-size: 1.75rem; /* 28px */
+    }
+    
+    .milestone-bullet {
+        width: 8px;
+        height: 8px;
+        margin-right: 0.75rem; /* 12px */
+        margin-top: 0.45em;
+    }
+    
+    .milestone-text {
+        font-size: 0.875rem; /* 14px */
+    }
+}
+
+/* Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus States for Accessibility */
+.timeline-item:focus { /* Using existing blue, more prominent */
+    outline: 3px solid var(--hsg-blue);
+    outline-offset: 1px;
+    border-radius: 4px; /* Add radius to focus outline on item */
+}
+
+.year-card:focus-within {
+    outline: 3px solid var(--hsg-blue);
+    outline-offset: 2px; /* Keep some space */
+    box-shadow: var(--shadow-lg), 0 0 0 3px var(--hsg-blue); /* Combine with focus outline */
+}
+
+button:focus, [role="button"]:focus {
+    outline: 3px solid var(--hsg-blue);
+    outline-offset: 1px;
+}
+
+
+/* High Contrast Mode Support (Example) */
+@media (prefers-contrast: high) {
+    :root { /* Define high contrast colors if needed */
+        --hsg-green-hc: #00FF00; /* Example */
+        --hsg-text-hc: #000000;
+        --hsg-bg-hc: #FFFFFF;
+    }
+    .year-card {
+        border-width: 2px;
+        border-color: var(--hsg-text-hc, #000000); /* Fallback to black */
+    }
+    .text-hsg-green, .year-title {
+        color: var(--hsg-text-hc, #000000) !important; /* Force high contrast text */
+    }
+    .milestone-bullet { /* Ensure bullet is visible */
+        background-color: var(--hsg-text-hc, #000000);
+        border: 1px solid var(--hsg-text-hc, #000000);
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important; /* No smooth scrolling */
+    }
+    .fade-in-up { /* Disable transform part of animation */
+        transform: translateY(0);
+    }
+}
